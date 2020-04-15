@@ -9,7 +9,7 @@
 # docker run --name vspeech -p 8885:8885 --rm vspeech
 # docker run --name vspeech -e DEBUG=true -p 8885:8885 --rm vspeech
 
-FROM ubuntu:18.04 AS build
+FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04 AS build
 
 ENV         DS_VERSION=0.6.1
 
@@ -30,7 +30,7 @@ RUN \
             apt-get autoremove -y && \
             apt-get clean -y
 
-FROM ubuntu:18.04 AS release
+FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04 AS release
 
 WORKDIR     /opt
 

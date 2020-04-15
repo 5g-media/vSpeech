@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "deepspeech": "^0.6.1",
-    "deepspeech-gpu": "^0.6.1",
+    "deepspeech-gpu": "file:deepspeech-gpu-0.6.1.tgz",
     "dotenv": "^8.1.0",
     "log-update": "^3.4.0",
     "request": "^2.88.2",
