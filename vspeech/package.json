@@ -1,0 +1,25 @@
+{
+  "name": "vspeech",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^2.2.0",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "deepspeech": "^0.5.1",
+    "dev-null": "^0.1.1",
+    "dotenv": "^6.2.0",
+    "express": "~4.15.5",
+    "hbs": "~4.0.1",
+    "morgan": "~1.9.0",
+    "node-media-server": "^2.1.1",
+    "node-vad": "^1.1.1",
+    "request": "^2.88.0",
+    "serve-favicon": "~2.4.5",
+    "socket.io": "^2.2.0"
+  }
+}

@@ -1,0 +1,6 @@
+name: vspeech-gsa
+title: vspeech-gsa
+author: eng
+created: 2018-06-23T22:47:24Z
+require:
+- osv.cli

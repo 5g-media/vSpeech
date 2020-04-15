@@ -1,0 +1,179 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">
+        <img src="/images/logo.png" width="128" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-tabs" aria-controls="nav-tabs" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="nav-tabs" class="collapse navbar-collapse">
+        <div class="nav navbar-nav ml-auto">
+            <a id="rt-tab" data-toggle="tab" href="#realtime" role="tab" class="nav-item nav-link active" aria-selected="true">Transcription</a>
+            <a id="tl-tab" data-toggle="tab" href="#timeline" role="tab" class="nav-item nav-link" aria-selected="false">Timeline</a>
+            <a id="st-tab" data-toggle="tab" href="#statistics" role="tab" class="nav-item nav-link" aria-selected="false">Statistics</a>
+            <a id="se-tab" data-toggle="tab" href="#settings" role="tab" class="nav-item nav-link" aria-selected="false">Settings</a>
+            <a id="ap-tab" data-toggle="tab" href="#api" role="tab" class="nav-item nav-link" aria-selected="false">API</a>
+            <a id="do-tab" data-toggle="tab" href="#documentation" role="tab" class="nav-item nav-link" aria-selected="false">Documentation</a>
+        </div>
+    </div>
+</nav>
+<div id="header" class="header">
+    <div class="row">
+        <div class="col text-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a id="bc-rt" class="text-dark" href="#realtime">{{title}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="tab">Transcription</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div id="content">
+    <div class="tab-content">
+        <div class="tab-pane show active" id="realtime" role="tabpanel" aria-labelledby="rt-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div id="livestream-container" class="livestream-container">
+                        <video id="videoElement" width="100%" height="100%" autoplay="true" muted="muted"></video>
+                        <div class="livestream-subtitle" {{#unless subtitles}}style="display:none"{{/unless}}>
+                            <span class="livestream-text"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="playElement">Play</button>
+                        <button id="seekElement">Seek</button>
+                        <button id="refreshElement">Refresh</button>
+                        <button id="mutedElement">Unmute</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="timeline" role="tabpanel" aria-labelledby="tl-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="info info-one" role="alert">
+                        <i class="fas fa-info-circle"></i> No data available!
+                    </div>
+                    <div style="display:inline-block;width:100%;overflow-y:auto;">
+                        <ul id="timebar" class="timeline timeline-horizontal"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="statistics" role="tabpanel" aria-labelledby="st-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="info info-one" role="alert">
+                        <i class="fas fa-info-circle"></i> No data available!
+                    </div>
+                    <div id='wordcloud' class="text-center"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="se-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="info" role="alert">
+                        <form id="formSettings">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="selectSpeech" class="font-weight-bold">Speech API:</label>
+                                    <select id="selectSpeech" class="form-control">
+                                        {{#each speech}}
+                                            <option {{#if selected}}selected{{/if}} value="{{name}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputStream" class="font-weight-bold">Live-Stream-URL:</label>
+                                    <input type="text" class="form-control" id="inputStream" placeholder="Live-Stream-URL" value="{{config.url}}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="selectLanguage" class="font-weight-bold">Language:</label>
+                                    <select id="selectLanguage" class="form-control">
+                                        {{#each config.language}}
+                                            <option {{#if selected}}selected{{/if}} value="{{code}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="selectValidity" class="font-weight-bold">Credentials duration of validity:</label>
+                                    <select id="selectValidity" class="form-control">
+                                        {{#each config.validity}}
+                                            <option {{#if selected}}selected{{/if}} value="{{duration}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="fileCredentials" class="font-weight-bold">Credentials:</label>
+                                    <input type="file" class="form-control-file" id="fileCredentials">
+                                </div>
+                            </div>
+                            <i class="fas fa-exclamation-triangle"></i> After updating the configuration, the transcription starts automatically. <br>
+                            <div class="text-right">
+                                <button id="buttonCancel" class="btn btn-dark">Cancel</button>
+                                <button id="buttonSave" type="submit" class="btn btn-danger">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="api" role="tabpanel" aria-labelledby="ap-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="info" role="alert">
+                        {{#with config.api}}
+                            {{#each endpoints}}
+                                <div class="p-3 mb-2 bg-primary text-dark"><span class="api">{{method}}</span> <a class="text-dark" href="{{../root}}{{endpoint}}" target="_blank">{{../root}}{{endpoint}}</a> <i class="float-right">{{description}}</i></div>
+                            {{/each}}
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="documentation" role="tabpanel" aria-labelledby="do-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="info" role="alert">
+                        <i class="fas fa-info-circle"></i> Coming soon!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="text-center">
+                <span>
+                    <small>
+                        <b>
+                        Confidence: <span id="footerConfidence">{{stats.confidence}}</span>% &middot;
+                        Words: <span id="footerWords">{{stats.wordCount}}</span> &middot;
+                        Language: <span id="footerLang">{{#each config.language}}{{#if selected}}{{name}}{{/if}}{{/each}}</span> &middot;
+                        © {{year}} BitTubes GmbH
+                        </b>
+                    </small>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col text-center">
+            <button type="button" id="buttonTranscript" class="btn btn-dark btn-lg"><i class="far fa-dot-circle"></i>Start Transcription</button>
+        </div>
+    </div>
+</div>
+<script src="/javascripts/socket.io.js"></script>
+<script src="/javascripts/d3.js"></script>
+<script src="/javascripts/d3.layout.cloud.js"></script>
+<script src="/javascripts/d3.wordcloud.js"></script>
+<script src="/javascripts/underscore.js"></script>
+<script src="/javascripts/flv.js"></script>
+<script src="/javascripts/client.js"></script>
