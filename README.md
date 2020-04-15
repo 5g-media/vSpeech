@@ -1,84 +1,66 @@
 ## vSpeech
-This project is a Speech-to-Text service. It can be used with either Mozilla's DeepSpeech Engine or Google's Cloud Speech-to-Text API.
+This project is a Speech-to-Text service based on Mozilla's DeepSpeech Engine.
 
 ## Requirements
-- node.js 8.x and higher
-- ffmpeg
+- node.js 10.x and higher
 
 ## Installation
 Change directory where the project files are located.
-### Development
+### Local environment
 ```
 npm install
 ```
-### Production
+### Docker
 ```
 docker build -t vspeech .
 ```
 ## Usage
 Run the following command to start the service.
-### Development
+### Local environment
 ```
-node ./bin/www
+node index.js
 ```
-### Production
+### Docker
+To start the *vspeech* service run:
 ```
-docker run --name vspeech -p 3000:3000 -d vspeech
+docker run --name vspeech -p 8885:8885 --rm vspeech
 ```
+To start the *vspeech* service and change its default configuration run:
+```
+docker run \
+--name vspeech \
+-e DEBUG=false \
+-e REQ_URL= \
+-e REQ_METHOD=POST \
+-e DECODE_FORMAT=vtt \
+-e DECODE_INTERVAL=5000 \
+-e BEAM_WIDTH=500 \
+-e LM_ALPHA=0.75 \
+-e LM_BETA=1.85 \
+-e AUDIO_SAMPLE_RATE=16000 \
+-e WS_PORT=8885 \
+-e EXT_HOST= \
+-e EXT_PORT= \
+-p 8885:8885 \
+--rm \
+vspeech
+```
+To remove the container run:
+```
+docker stop vspeech
+```
+## Configuration
+The configuration of the service must be done in the *.env* file. The following parameters exist:
 
-## API
-The following api endpoints are available:
-```
-GET /api                        Finds all data
-```
-```
-GET /api/transcription          Finds transcription
-```
-```
-POST /api/transcription/start   Starts transcription
-```
-```
-POST /api/transcription/stop    Stops transcription
-```
-```
-GET /api/transcription/state    Finds state of transcription
-```
-```
-GET /api/words                  Finds words
-```
-```
-GET /api/statistics             Finds statistics
-```
-```
-GET /api/configuration          Finds configuration
-```
-```
-POST /api/configuration         Updates configuration
-```
-#### Parameters
-| Name          | Type          | Description  |
-| ------------- |:-------------:| -----|
-| `url`         | `string`      | URL of the RTP/RTMP/RTSP video live stream |
-| `language`    | `string`      | language of the video live stream (default: *en-US*) |
-| `validity`    | `number`      | duration in ms how long the credentials will be valid (default: *60000*) |
-| `credentials` | `object`      | google application credentials |
-
-#### Example
-```json
-{
-  "url": "rtmp://localhost/live/teststream",
-  "language": "en-US",
-  "validity": 60000
-}
-```
-
-## Additional Parameters
-`-e PORT` - port on which the web service is running  
-`-e SPEECH_API` - S2T engine to use (`ds`, `gsa`)
-`-e INPUT_URL` - URL of the RTP/RTMP/RTSP video live stream
-`-e INPUT_RESOLUTION` - Resolution of the input stream
-`-e OUTPUT_URL` - URL of the output stream
-`-e OUTPUT_FORMAT` - output format (`mpegts`, `flv`, ...)
-`-e OUTPUT_METHOD` - text rendered in the `video` or as `metadata`
-`-e LANGUAGE` - language of the video live stream
-`-e DURATION` - duration how long the credentials will be valid
+`DEBUG` - Enable/disable debugging (default: false)\
+`REQ_URL` - Defines the URL to send the text result after the stream has finished (default: )\
+`REQ_METHOD` - Defines the HTTP method to use for the request (default: POST)\
+`DECODE_FORMAT` - Defines the decoding format (default: vtt)\
+`DECODE_INTERVAL` - Interval in which intermediate results are calculated (default: 5000)\
+`BEAM_WIDTH` - Defines speech service related paramter (default: 500)\
+`LM_ALPHA` - Defines speech service related paramter (default: 0.75)\
+`LM_BETA` - Defines speech service related paramter (default: 1.85)\
+`AUDIO_SAMPLE_RATE` - Defines the audio sample rate (default: 16000)\
+`WS_PORT` - Websocket server's port (default: 8885)\
+`EXT_HOST` - Websocket clients's host URL (default:)\
+`EXT_PORT` - Websocket clients's port (default:)

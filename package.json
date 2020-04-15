@@ -1,0 +1,17 @@
+{
+  "name": "vspeech",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodejs index.js"
+  },
+  "dependencies": {
+    "deepspeech": "^0.6.1",
+    "deepspeech-gpu": "^0.6.1",
+    "dotenv": "^8.1.0",
+    "log-update": "^3.4.0",
+    "request": "^2.88.2",
+    "websocket-stream": "^5.5.0",
+    "ws": "^7.2.1"
+  }
+}
